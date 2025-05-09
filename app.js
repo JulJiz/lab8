@@ -1,97 +1,85 @@
-// Referencias al DOM
-const campoEntrada = document.querySelector('#ingresar-tarea');
-const botonAdd = document.querySelector('#boton-agregar');
-const contenedorTareas = document.querySelector('#lista-tareas');
+// Seleccionar los elementos del DOM
+const inputTarea = document.getElementById("ingresar-tarea");
+const botonAgregar = document.getElementById("boton-agregar");
+const listaTareas = document.getElementById("lista-tareas");
 
-// Cargar tareas desde localStorage (o inicializar si no hay nada)
-function cargarTareas() {
-  const json = localStorage.getItem('misTareas');
-  if (!json) {
-    const defecto = [
-      { texto: 'Pasear al perro', hecha: false },
-      { texto: 'Pagar servicios', hecha: false },
-      { texto: 'Estudiar para el examen', hecha: false },
-      { texto: 'Comprar pan', hecha: false }
-    ];
-    localStorage.setItem('misTareas', JSON.stringify(defecto));
-    return defecto;
-  }
-  return JSON.parse(json);
+// Obtener tareas del localStorage
+function obtenerTareasLocalStorage() {
+  const tareas = localStorage.getItem("tareas");
+  return tareas ? JSON.parse(tareas) : [];
 }
 
-// Guardar en localStorage
-function guardarTareas(lista) {
-  localStorage.setItem('misTareas', JSON.stringify(lista));
+// Guardar tareas en localStorage
+function guardarTareasLocalStorage(tareas) {
+  localStorage.setItem("tareas", JSON.stringify(tareas));
 }
 
-// Dibujar tareas en pantalla
-function renderizar() {
-  const lista = cargarTareas();
-  contenedorTareas.innerHTML = '';
+// Renderizar la lista de tareas en el DOM
+function mostrarTareas() {
+  const tareas = obtenerTareasLocalStorage();
+  listaTareas.innerHTML = "";
 
-  lista.forEach((item, idx) => {
-    // crear elemento <li>
-    const elemento = document.createElement('li');
-    elemento.classList.add('task-item');
-
-    // contenido de texto
-    const textoNodo = document.createElement('span');
-    textoNodo.className = 'task-texto';
-    if (item.hecha) textoNodo.classList.add('done');
-    textoNodo.textContent = item.texto;
-    elemento.appendChild(textoNodo);
-
-    // botones
-    const btns = document.createElement('div');
-    btns.className = 'task-buttons';
-
-    const btnCheck = document.createElement('button');
-    btnCheck.textContent = '✔️';
-    btnCheck.addEventListener('click', () => marcar(idx));
-    btns.appendChild(btnCheck);
-
-    const btnTrash = document.createElement('button');
-    btnTrash.textContent = '❌';
-    btnTrash.addEventListener('click', () => borrar(idx));
-    btns.appendChild(btnTrash);
-
-    elemento.appendChild(btns);
-    contenedorTareas.appendChild(elemento);
+  tareas.forEach((tarea, index) => {
+    const li = document.createElement("li");
+    li.className = "tarea-item";
+    li.innerHTML = `
+      <span class="tarea-texto ${tarea.completada ? 'completada' : ''}">${tarea.texto}</span>
+      <button class="btn-completar" onclick="completarTarea(${index})">✔️</button>
+      <button class="btn-eliminar" onclick="eliminarTarea(${index})">❌</button>
+    `;
+    listaTareas.appendChild(li);
   });
 }
 
-// Alternar estado hecha/no hecha
-function marcar(indice) {
-  const lista = cargarTareas();
-  lista[indice].hecha = !lista[indice].hecha;
-  guardarTareas(lista);
-  renderizar();
+// Marcar la tarea como completada
+function completarTarea(index) {
+  const tareas = obtenerTareasLocalStorage();
+  tareas[index].completada = !tareas[index].completada;
+  guardarTareasLocalStorage(tareas);
+  mostrarTareas();
 }
 
-// Eliminar tarea
-function borrar(indice) {
-  const lista = cargarTareas();
-  lista.splice(indice, 1);
-  guardarTareas(lista);
-  renderizar();
+// Eliminar la tarea correspondiente
+function eliminarTarea(index) {
+  const tareas = obtenerTareasLocalStorage();
+  tareas.splice(index, 1);
+  guardarTareasLocalStorage(tareas);
+  mostrarTareas();
 }
 
-// Añadir nueva tarea
-function agregar() {
-  const texto = campoEntrada.value.trim();
-  if (!texto) return;
-  const lista = cargarTareas();
-  lista.push({ texto, hecha: false });
-  guardarTareas(lista);
-  campoEntrada.value = '';
-  renderizar();
+// Crear una nueva tarea
+function nuevaTarea() {
+  const texto = inputTarea.value.trim();
+  if (texto !== "") {
+    const tareas = obtenerTareasLocalStorage();
+    tareas.push({ texto, completada: false });
+    guardarTareasLocalStorage(tareas);
+    inputTarea.value = "";
+    mostrarTareas();
+  }
 }
 
-// Listeners
-botonAdd.addEventListener('click', agregar);
-campoEntrada.addEventListener('keydown', e => {
-  if (e.key === 'Enter') agregar();
+// Escuchar el botón Agregar
+botonAgregar.addEventListener("click", nuevaTarea);
+
+// Escuchar la tecla Enter
+inputTarea.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    nuevaTarea();
+  }
 });
 
-// Arrancar al cargar la página
-document.addEventListener('DOMContentLoaded', renderizar);
+// Mostrar tareas al cargar
+const tareasIniciales = [
+  { texto: "Pasear el perro", completada: false },
+  { texto: "Pagar los Servicios", completada: false},
+  { texto: "Estudiar para el examen", completada: false },
+  { texto: "Comprar el Pan", completada: false }
+];
+
+const tareasGuardadas = obtenerTareasLocalStorage();
+if (tareasGuardadas.length === 0) {
+  guardarTareasLocalStorage(tareasIniciales);
+}
+
+mostrarTareas();

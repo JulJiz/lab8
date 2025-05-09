@@ -23,9 +23,9 @@ body {
   width: 700px;
   min-height: 500px;
   background-color: white;
-  padding: 40px;
-  border: 5px solid black;
-  border-radius: 20px;
+  padding: 20px; /* Reduje el padding */
+  border: 2px solid black; /* Reduje el borde y lo hice sólido */
+  border-radius: 10px; /* Reduje el radio del borde */
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -35,58 +35,67 @@ body {
 /* Titulo */
 
 h1 {
-  font-size: 40px;
+  font-size: 28px; /* Reduje el tamaño del título */
+  margin-bottom: 10px; /* Agregué margen inferior */
+}
+
+/* Icono del título */
+h1::before {
+  content: "📋 "; /* Agregué el icono de la lista */
+  font-size: 1.2em; /* Ajusté el tamaño del icono */
+  margin-right: 5px;
 }
 
 /* Ingresar texto */
 
 input {
-  width: 90%;
-  height: 40px;
-  font-size: 20px;
-  margin: 20px;
-  padding: 10px;
-  border: 4px solid #9c9a9a;
-  border-radius: 10px;
+  width: 80%; /* Reduje el ancho del input */
+  height: 35px; /* Reduje la altura del input */
+  font-size: 16px; /* Reduje el tamaño de la fuente */
+  margin: 10px 0; /* Reduje el margen */
+  padding: 8px;
+  border: 1px solid gray; /* Cambié el borde */
+  border-radius: 5px; /* Reduje el radio del borde */
 }
 
 /* Boton */
 
 #boton-agregar {
-  width: 90%;
-  height: 60px;
-  padding: 10px;
+  width: 80%; /* Reduje el ancho del botón */
+  height: 40px; /* Reduje la altura del botón */
+  padding: 8px;
   color: white;
-  background-color: #1312a8;
-  font-size: 20px;
-  border-radius: 20px;
-  border: 0px solid black;
+  background-color: #00008B; /* Cambié el color a azul oscuro */
+  font-size: 16px; /* Reduje el tamaño de la fuente */
+  border-radius: 5px; /* Reduje el radio del borde */
+  border: none; /* Eliminé el borde */
   cursor: pointer;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* Reduje el margen inferior */
 }
 
 #boton-agregar:hover {
-  background-color: #0d0c6c;
+  background-color: #000066; /* Cambié el color del hover */
 }
 
 #boton-agregar:active {
-  background-color: #0a0a4c;
+  background-color: #00004d; /* Cambié el color del active */
 }
+
 /* Lista de tareas */
 
 #lista-tareas {
-  width: 90%;
+  width: 80%; /* Reduje el ancho de la lista */
 }
 
 /* Tareas individuales */
 
-.tarea {
-  font-size: 18px;
-  padding-left: 20px;
+.tarea-item {
+  font-size: 16px; /* Reduje el tamaño de la fuente */
+  padding: 10px;
   margin-top: 5px;
-  color: white;
-  background-color: #407ba6;
-  border-radius: 10px;
+  color: black; /* Cambié el color de la fuente */
+  background-color: #4682B4; /* Cambié el color de fondo a azul acero */
+  border-radius: 5px; /* Reduje el radio del borde */
   display: flex;
   align-items: center;
   text-align: left;
@@ -98,35 +107,35 @@ input {
 
 .completada {
   text-decoration: line-through;
-  color: rgb(3, 250, 3);
-  background-color: black;
-  border: none;
+  color: gray; /* Cambié el color a gris */
+  background-color: #B0C4DE; /* Cambié el color de fondo a azul claro */
 }
 
 /* Iconos */
 
-.btn_ok {
-  margin: 4px;
-  padding: 5px;
-  font-size: 20px;
+.btn-completar, .btn-eliminar {
+  margin: 2px; /* Reduje el margen */
+  padding: 5px 8px; /* Ajusté el padding */
+  font-size: 16px; /* Reduje el tamaño de la fuente */
   cursor: pointer;
-  background-color: rgb(153, 181, 61);
+  border: none; /* Eliminé el borde */
+  border-radius: 3px; /* Agregué un pequeño radio al borde */
 }
 
-.btn_ok:hover {
+.btn-completar {
+  background-color: #90EE90; /* Cambié el color a verde claro */
+  color: black;
+}
+
+.btn-eliminar {
+  background-color: #F08080; /* Cambié el color a rojo claro */
+  color: black;
+}
+
+.btn-completar:hover {
   opacity: 0.8;
 }
 
-.btn_eliminar {
-  margin: 4px;
-  padding: 5px;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: rgb(220, 170, 154);
-}
-
-.btn_eliminar:hover {
+.btn-eliminar:hover {
   opacity: 0.8;
 }
-
-
